@@ -2,7 +2,7 @@
 FROM node:22-alpine AS builder
 WORKDIR /app
 
-# Copiar dependencias primero para aprovechar el caché de Docker
+# Copiar dependencias primero
 COPY package*.json ./
 RUN npm ci
 
@@ -12,6 +12,10 @@ RUN npm run build
 
 # Etapa 2: Producción (Servidor Nginx)
 FROM nginx:alpine
+
+# >>> LA SOLUCIÓN: Parchar las vulnerabilidades del sistema base <<<
+RUN apk update && apk upgrade
+
 # Copiamos los archivos estáticos generados por Astro a Nginx
 COPY --from=builder /app/dist /usr/share/nginx/html
 
