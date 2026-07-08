@@ -1,0 +1,101 @@
+---
+import ThreeScene from '../../islands/ThreeScene.astro';
+import { getTranslations } from '../../../i18n/ui';
+
+const { lang = 'es' } = Astro.props;
+const t = getTranslations(lang);
+const { services } = t;
+---
+
+<section id="services-hero" class="hero-section">
+  <ThreeScene />
+  
+  <div class="container hero-container relative">
+    <div class="hero-content" data-gsap="fade-up">
+      <h1 class="hero-title display">{services.heroTitle}</h1>
+      <p class="hero-subtitle text-secondary">{services.heroSubtitle}</p>
+      
+      <div class="hero-actions">
+        <a href={lang === 'en' ? '/en/contacto' : '/contacto'} class="btn btn-primary mono">
+          {services.btnBookCall}
+        </a>
+        <a href={lang === 'en' ? '/en' : '/'} class="btn btn-outline mono">
+          {services.btnViewProjects}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: var(--header-height);
+    padding-bottom: 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .relative { position: relative; z-index: 2; }
+  
+  .hero-container {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+  }
+  
+  .hero-content {
+    max-width: 900px;
+  }
+  
+  .hero-title {
+    font-size: clamp(3rem, 8vw, 7rem);
+    color: var(--text-primary);
+    line-height: 1;
+    margin-bottom: 2rem;
+  }
+  
+  .hero-subtitle {
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    max-width: 700px;
+    line-height: 1.5;
+    margin-bottom: 3rem;
+  }
+  
+  .hero-actions {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  
+  .btn {
+    display: inline-block;
+    padding: 1rem 2.5rem;
+    text-decoration: none;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-primary {
+    background: var(--text-primary);
+    color: var(--bg-primary);
+    border: 1px solid var(--text-primary);
+  }
+  .btn-primary:hover {
+    transform: translateY(-3px);
+  }
+  
+  .btn-outline {
+    background: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--text-primary);
+  }
+  .btn-outline:hover {
+    background: var(--text-primary);
+    color: var(--bg-primary);
+  }
+</style>

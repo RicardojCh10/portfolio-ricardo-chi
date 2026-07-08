@@ -1,0 +1,202 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GsapAnimations from '../components/islands/GsapAnimations.astro';
+import { PERSONAL } from '../data/site';
+---
+
+<BaseLayout title="Contacto | Ricardo Chi">
+  <section class="section header-section">
+    <div class="container">
+      <div class="section-header" data-gsap="fade-up">
+        <span class="section-num mono text-accent">03 //</span>
+        <h1 class="display section-title">Contacto</h1>
+      </div>
+      
+      <div class="contact-grid mt-8">
+        <!-- Izquierda: Información y Redes -->
+        <div class="contact-info" data-gsap="fade-up">
+          <h2 class="display text-accent mb-4">Hablemos de tu Proyecto</h2>
+          <p class="contact-text">
+            Si tienes un reto tecnológico complejo, analicemos los requisitos para diseñar una solución a tu medida enfocada en resultados reales.
+          </p>
+          
+          <div class="direct-contact mt-8">
+            <a href="https://wa.me/5219983520267?text=Hola%20Ricardo,%20vengo%20de%20tu%20portafolio%20y%20me%20gustar%C3%ADa%20hablar%20sobre%20un%20proyecto." target="_blank" class="btn btn-whatsapp mono">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:0.5rem"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              INICIAR CHAT POR WHATSAPP
+            </a>
+          </div>
+          
+          <div class="contact-meta mono text-muted mt-8">
+            <p>Email: <a href={`mailto:${PERSONAL.email}`} style="color:var(--text-primary)">{PERSONAL.email}</a></p>
+            <p>Ubicación: {PERSONAL.location}</p>
+            <p>Disponibilidad: {PERSONAL.availability}</p>
+            
+            <div class="social-links mt-8">
+              <h3 class="mb-4" style="color:var(--text-secondary)">CONECTAR EN REDES</h3>
+              <div class="social-grid">
+                <a href="https://www.linkedin.com/in/ricardo-jesus-chi-chan-71a6972b4" class="hover-target" target="_blank">LINKEDIN ↗</a>
+                <a href="https://github.com/RicardojCh10" class="hover-target" target="_blank">GITHUB ↗</a>
+                <a href="https://instagram.com/riccardo.jch" class="hover-target" target="_blank">INSTAGRAM ↗</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Derecha: Formulario -->
+        <div class="contact-form-wrapper" data-gsap="fade-up">
+          <form action="https://formsubmit.co/ricardojch1chan@gmail.com" method="POST" class="contact-form">
+            <h3 class="mono text-accent mb-4">O DÉJAME UN MENSAJE</h3>
+            
+            <!-- Configuraciones FormSubmit -->
+            <input type="hidden" name="_subject" value="Nuevo lead desde tu Portafolio Web!">
+            <input type="hidden" name="_captcha" value="false">
+            <!-- Formulario UI -->
+            
+            <div class="form-group">
+              <label for="name" class="mono text-muted">NOMBRE</label>
+              <input type="text" id="name" name="name" required class="form-control" placeholder="Tu nombre o empresa">
+            </div>
+            
+            <div class="form-group">
+              <label for="email" class="mono text-muted">CORREO ELECTRÓNICO</label>
+              <input type="email" id="email" name="email" required class="form-control" placeholder="tu@correo.com">
+            </div>
+            
+            <div class="form-group">
+              <label for="service" class="mono text-muted">SERVICIO DE INTERÉS</label>
+              <select id="service" name="service" required class="form-control">
+                <option value="">Selecciona una opción...</option>
+                <option value="web">Plataformas Web / Sitios Web</option>
+                <option value="chatbots">Funnels / Chatbots con IA</option>
+                <option value="ux-ui">Diseño UX / UI</option>
+                <option value="automation">Sistemas de Gestión / Automatización</option>
+                <option value="other">Otro Proyecto</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="message" class="mono text-muted">MENSAJE (OPCIONAL)</label>
+              <textarea id="message" name="message" rows="4" class="form-control" placeholder="Cuéntame brevemente sobre tu proyecto..."></textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-primary mono hover-target">ENVIAR MENSAJE</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <GsapAnimations />
+</BaseLayout>
+
+<style>
+  .header-section {
+    padding-top: calc(var(--header-height) + 10rem);
+    min-height: 100vh;
+  }
+  .section-title {
+    font-size: clamp(3rem, 10vw, 7rem);
+    margin-bottom: 4rem;
+  }
+  
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+  }
+  .mb-4 { margin-bottom: 1.5rem; }
+  .contact-text {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+  }
+  .btn-whatsapp {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 1.5rem;
+    background: #25D366;
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: transform 0.3s, background 0.3s;
+  }
+  .btn-whatsapp:hover {
+    background: #1da851;
+    transform: translateY(-3px);
+  }
+  .social-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .social-grid a {
+    color: var(--text-primary);
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: color 0.3s;
+  }
+  .social-grid a:hover {
+    color: var(--accent);
+  }
+  
+  /* Formulario */
+  .contact-form-wrapper {
+    background: var(--bg-secondary);
+    padding: 3rem;
+    border: 1px solid var(--line);
+  }
+  .form-group {
+    margin-bottom: 2rem;
+  }
+  .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+  }
+  .form-control {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--line);
+    padding: 1rem 0;
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    font-size: 1.1rem;
+    transition: border-color 0.3s;
+  }
+  .form-control:focus {
+    outline: none;
+    border-bottom-color: var(--accent);
+  }
+  textarea.form-control {
+    resize: vertical;
+  }
+  .btn-primary {
+    width: 100%;
+    padding: 1.5rem;
+    background: var(--text-primary);
+    color: var(--bg-primary);
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: transform 0.3s, background 0.3s;
+  }
+  .btn-primary:hover {
+    transform: translateY(-3px);
+  }
+  
+  .mt-8 { margin-top: 3rem; }
+  
+  @media (max-width: 900px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
+      gap: 4rem;
+    }
+    .contact-form-wrapper {
+      padding: 2rem 1.5rem;
+    }
+  }
+</style>

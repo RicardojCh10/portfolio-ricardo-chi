@@ -1,0 +1,112 @@
+---
+import { getTranslations } from '../../../i18n/ui';
+
+const { lang = 'es' } = Astro.props;
+const t = getTranslations(lang);
+const { services } = t;
+---
+
+<section class="section">
+  <div class="container grid-50-50">
+    
+    <!-- Beneficios -->
+    <div class="benefits-col" data-gsap="fade-up">
+      <h2 class="display col-title mb-8">{services.benefitsTitle}</h2>
+      <div class="benefits-grid">
+        {services.benefitsList.map((benefit) => (
+          <div class="benefit-tag">
+            <span class="text-accent">◆</span>
+            <span class="mono">{benefit}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+    
+    <!-- Casos de Estudio -->
+    <div class="cases-col" data-gsap="fade-up">
+      <h2 class="display col-title mb-8">{services.casesTitle}</h2>
+      <div class="cases-list">
+        {services.casesList.map((caseItem, index) => (
+          <div class="case-item hover-target">
+            <span class="case-num mono text-muted">0{index + 1}</span>
+            <h3 class="case-name display">{caseItem}</h3>
+            <div class="case-arrow text-accent">↗</div>
+          </div>
+        ))}
+      </div>
+    </div>
+    
+  </div>
+</section>
+
+<style>
+  .col-title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+  }
+  
+  .mb-8 { margin-bottom: 3rem; }
+  
+  .benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .benefit-tag {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    border: 1px solid var(--line);
+    background: var(--bg-secondary);
+    font-size: 0.9rem;
+    transition: border-color 0.3s;
+  }
+  
+  .benefit-tag:hover {
+    border-color: var(--accent);
+  }
+  
+  .cases-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .case-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2rem 0;
+    border-bottom: 1px solid var(--line);
+    cursor: pointer;
+    transition: padding-left 0.3s, color 0.3s;
+  }
+  
+  .case-item:hover {
+    padding-left: 1.5rem;
+    border-bottom-color: var(--text-primary);
+  }
+  
+  .case-num {
+    font-size: 1.2rem;
+    width: 3rem;
+  }
+  
+  .case-name {
+    flex-grow: 1;
+    font-size: clamp(1.2rem, 3vw, 2rem);
+  }
+  
+  .case-arrow {
+    font-size: 1.5rem;
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: opacity 0.3s, transform 0.3s;
+  }
+  
+  .case-item:hover .case-arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+</style>

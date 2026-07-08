@@ -1,0 +1,107 @@
+---
+/**
+ * GSAP Animations Island - Premium Single Page Animations
+ */
+---
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Almacenamos el contexto de GSAP globalmente en este módulo
+  let ctx: gsap.Context;
+
+  const initAnimations = () => {
+    // Si ya existe un contexto previo, lo limpiamos para evitar duplicidades
+    if (ctx) ctx.revert();
+
+    // Envolvemos TODA la lógica de animación en gsap.context()
+    ctx = gsap.context(() => {
+      
+      // 1. Hero Sweep Animation
+      const sweeps = document.querySelectorAll('[data-gsap="sweep"] .block');
+      if (sweeps.length > 0) {
+        gsap.fromTo(sweeps, 
+          { yPercent: 100, opacity: 0 },
+          { yPercent: 0, opacity: 1, duration: 1.2, stagger: 0.2, ease: "expo.out", delay: 0.2 }
+        );
+      }
+
+      // 2. Fade Up Elements
+      const fadeUps = document.querySelectorAll('[data-gsap="fade-up"]');
+      fadeUps.forEach((el) => {
+        gsap.fromTo(el,
+          { y: 50, opacity: 0 },
+          {
+            y: 0, opacity: 1,
+            duration: 1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: el,
+              start: "top 85%",
+              toggleActions: "play none none reverse"
+            }
+          }
+        );
+      });
+
+      // 3. Reveal Line (Projects)
+      const lineReveals = document.querySelectorAll('[data-gsap="reveal-line"]');
+      lineReveals.forEach((el) => {
+        gsap.fromTo(el,
+          { opacity: 0, x: -30 },
+          {
+            opacity: 1, x: 0,
+            duration: 0.8,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: el,
+              start: "top 85%"
+            }
+          }
+        );
+      });
+
+      // 4. Parallax Marquee
+      const marquee = document.querySelector('.marquee-content');
+      if (marquee) {
+        gsap.to(marquee, {
+          xPercent: -20,
+          ease: "none",
+          scrollTrigger: {
+            trigger: ".marquee-border",
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1
+          }
+        });
+      }
+    });
+  };
+
+  // LIMPIEZA ESTRICTA: Se ejecuta ANTES de que Astro intercambie el DOM
+  document.addEventListener('astro:before-swap', () => {
+    if (ctx) {
+      // .revert() es la clave: mata los ScrollTriggers, detiene tweens 
+      // y LIMPIA los estilos en línea (inline styles) del DOM viejo.
+      ctx.revert();
+    }
+  });
+
+  // INICIALIZACIÓN SEGURA: Esperamos a que la página nueva esté lista
+  document.addEventListener('astro:page-load', () => {
+    // Usamos requestAnimationFrame para asegurar que el navegador ha pintado el nuevo DOM.
+    requestAnimationFrame(() => {
+      initAnimations();
+      // Refrescar al cargar las imágenes para recalcular tamaños
+      window.addEventListener('load', () => ScrollTrigger.refresh());
+    });
+  });
+</script>
+
+<style is:global>
+  [data-gsap="sweep"] {
+    overflow: hidden;
+  }
+</style>

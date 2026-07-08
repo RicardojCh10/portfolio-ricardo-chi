@@ -1,0 +1,89 @@
+---
+import { getTranslations } from '../../../i18n/ui';
+
+const { lang } = Astro.props;
+const t = getTranslations(lang);
+---
+
+<section id="benefits" class="section">
+  <div class="container">
+    <div class="section-header" data-gsap="fade-up">
+      <span class="section-num mono text-accent">01 //</span>
+      <h2 class="display section-title" set:html={t.benefitsTitle}></h2>
+    </div>
+    
+    <div class="benefits-grid">
+      {t.benefits.map((benefit: any, index: number) => (
+        <div class="benefit-card" data-gsap="fade-up">
+          <span class="mono text-muted mb-4 block">0{index + 1}.</span>
+          <h3 class="display benefit-title">{benefit.title}</h3>
+          <p class="text-secondary benefit-desc">{benefit.desc}</p>
+          <a href={`${t.contactUrl}?subject=${encodeURIComponent(benefit.slug)}`} class="btn-link mono hover-target">
+            {t.learnMore}
+          </a>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .block { display: block; }
+  .mb-4 { margin-bottom: 1.5rem; }
+
+  .section-header {
+    margin-bottom: 4rem;
+  }
+  .section-title {
+    font-size: clamp(2.5rem, 8vw, 6rem);
+  }
+
+  /* Benefits Grid - Mobile First y Sin Desbordamiento */
+  .benefits-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Móvil: 1 columna, apilado */
+    gap: 2rem;
+  }
+  
+  @media (min-width: 768px) {
+    .benefits-grid {
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 3rem;
+      align-items: stretch;
+    }
+  }
+
+  .benefit-card {
+    padding: 2.5rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition: border-color 0.3s;
+    /* Para prevenir que palabras largas rompan la tarjeta */
+    word-break: break-word;
+  }
+  .benefit-card:hover {
+    border-color: var(--accent);
+  }
+  .benefit-title {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    margin-bottom: 1.5rem;
+    line-height: 1.1;
+  }
+  .benefit-desc {
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    flex-grow: 1;
+    font-size: clamp(0.95rem, 2vw, 1rem);
+  }
+  .btn-link {
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    align-self: flex-start;
+    margin-top: auto;
+  }
+</style>

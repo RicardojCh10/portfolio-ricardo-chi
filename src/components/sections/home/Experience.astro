@@ -1,0 +1,84 @@
+---
+import { getTranslations } from '../../../i18n/ui';
+
+const { lang, experience, education } = Astro.props;
+const t = getTranslations(lang);
+---
+
+<section id="experience" class="section">
+  <!-- grid-responsive colapsa a 1 columna en móvil, 2 en desktop -->
+  <div class="container grid-responsive">
+    
+    <!-- Experience -->
+    <div>
+      <div class="section-header" data-gsap="fade-up">
+        <span class="section-num mono text-accent">04 //</span>
+        <h2 class="display section-title">{t.expTitle}</h2>
+      </div>
+      <div class="timeline">
+        {experience.map((exp: any) => (
+          <div class="timeline-item" data-gsap="fade-up">
+            <span class="mono text-accent text-sm">{exp.date}</span>
+            <h3 class="timeline-role display">{exp.role}</h3>
+            <span class="timeline-company text-muted mono">{exp.company}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+    
+    <!-- Education -->
+    <div>
+      <div class="section-header" data-gsap="fade-up">
+        <span class="section-num mono text-accent">05 //</span>
+        <h2 class="display section-title">{t.eduTitle}</h2>
+      </div>
+      <div class="timeline">
+        {education.map((edu: any) => (
+          <div class="timeline-item" data-gsap="fade-up">
+            <span class="mono text-accent text-sm">{edu.date}</span>
+            <h3 class="timeline-role display">{edu.degree}</h3>
+            <span class="timeline-company text-muted mono">{edu.institution}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+    
+  </div>
+</section>
+
+<style>
+  .section-header {
+    margin-bottom: 3rem;
+  }
+  .section-title {
+    font-size: clamp(2.5rem, 6vw, 3rem);
+  }
+
+  /* Grid Responsivo Seguro */
+  .grid-responsive {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4rem;
+  }
+  @media (min-width: 768px) {
+    .grid-responsive {
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+  }
+
+  /* Timeline */
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+  .timeline-role {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    margin: 0.5rem 0;
+    line-height: 1.1;
+  }
+  .text-sm {
+    font-size: 0.85rem;
+  }
+</style>

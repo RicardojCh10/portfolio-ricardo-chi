@@ -1,0 +1,90 @@
+---
+import { getTranslations } from '../../../i18n/ui';
+
+const { lang = 'es' } = Astro.props;
+const t = getTranslations(lang);
+const { services } = t;
+
+// Clonamos la lista para la marquesina infinita (2 bloques)
+const sectors = services.sectors;
+---
+
+<div class="marquee-section">
+  <div class="marquee-border" aria-hidden="true">
+    <div class="marquee-track">
+      <!-- Primer Bloque -->
+      <div class="marquee-content">
+        {sectors.map((sector) => (
+          <span class="marquee-item">
+            <span class="display marquee-text">{sector}</span>
+            <span class="text-accent marquee-icon">◆</span>
+          </span>
+        ))}
+      </div>
+      <!-- Segundo Bloque -->
+      <div class="marquee-content">
+        {sectors.map((sector) => (
+          <span class="marquee-item">
+            <span class="display marquee-text">{sector}</span>
+            <span class="text-accent marquee-icon">◆</span>
+          </span>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .marquee-section {
+    padding: 6rem 0;
+  }
+  
+  .marquee-border {
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 2rem 0;
+    overflow: hidden;
+    width: 100vw;
+    background: var(--bg-primary);
+  }
+  
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    align-items: center;
+    white-space: nowrap;
+    animation: marquee 25s linear infinite;
+    will-change: transform;
+  }
+  
+  .marquee-content {
+    display: flex;
+    align-items: center;
+  }
+  
+  .marquee-item {
+    display: flex;
+    align-items: center;
+  }
+  
+  .marquee-text {
+    padding: 0 2rem;
+    font-size: clamp(3rem, 6vw, 5rem);
+    color: var(--bg-secondary);
+    -webkit-text-stroke: 1px var(--text-primary);
+    transition: color 0.3s;
+  }
+  
+  .marquee-text:hover {
+    color: var(--text-primary);
+  }
+  
+  .marquee-icon {
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+  }
+  
+  @keyframes marquee {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-50%, 0, 0); }
+  }
+</style>

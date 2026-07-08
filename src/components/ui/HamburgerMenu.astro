@@ -1,0 +1,230 @@
+---
+const { lang = 'es' } = Astro.props;
+
+const menuItems = lang === 'es' 
+  ? [
+      { url: '/', text: 'INICIO' },
+      { url: '/servicios', text: 'SERVICIOS' },
+      { url: '/contacto', text: 'CONTACTO' },
+    ]
+  : [
+      { url: '/en', text: 'HOME' },
+      { url: '/en/servicios', text: 'SERVICES' },
+      { url: '/en/contacto', text: 'CONTACT' },
+    ];
+
+const currentPath = Astro.url.pathname;
+const rawPath = currentPath.replace(/\/$/, '') || '/';
+const isEn = lang === 'en';
+
+// Calculate alternate language paths
+const switchEs = isEn ? rawPath.replace(/^\/en/, '') || '/' : rawPath;
+const switchEn = isEn ? rawPath : (rawPath === '/' ? '/en' : `/en${rawPath}`);
+---
+<!-- Botón del menú (sólo visible en móviles por CSS) -->
+<button id="menu-toggle" class="menu-toggle hover-target" aria-label="Abrir menú">
+  <span class="menu-text mono">{lang === 'es' ? 'MENÚ' : 'MENU'}</span>
+  <div class="hamburger">
+    <span class="line line-1"></span>
+    <span class="line line-2"></span>
+  </div>
+</button>
+
+<!-- Overlay a pantalla completa -->
+<div id="menu-overlay" class="menu-overlay" aria-hidden="true">
+  <div class="menu-inner">
+    <div class="menu-header">
+      <span class="mono text-muted">{lang === 'es' ? 'NAVEGACIÓN' : 'NAVIGATION'}</span>
+    </div>
+    
+    <nav class="menu-nav">
+      {menuItems.map(item => (
+        <a href={item.url} class="menu-link display hover-target" data-text={item.text}>{item.text}</a>
+      ))}
+    </nav>
+    
+    <div class="menu-footer mono text-muted">
+      <span>{new Date().getFullYear()} © RICARDO CHI</span>
+      <div class="lang-switch">
+        <a href={switchEs} class={`lang-btn hover-target ${!isEn ? 'active' : ''}`}>ES</a>
+        <span class="separator">/</span>
+        <a href={switchEn} class={`lang-btn hover-target ${isEn ? 'active' : ''}`}>EN</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { gsap } from 'gsap';
+
+  // Global flag to track state safely across transitions
+  let isMenuOpen = false;
+
+  const initMenu = () => {
+    const toggle = document.getElementById('menu-toggle');
+    const overlay = document.getElementById('menu-overlay');
+    // Incluir botones de idioma en los enlaces que cierran el menú
+    const links = document.querySelectorAll('.menu-link, .lang-btn'); 
+
+    if (!toggle || !overlay) return;
+
+    // Resetear estado al cargar una nueva página (por si acaso)
+    isMenuOpen = false;
+    document.body.style.overflow = ''; // Asegurar que no hay scroll bloqueado
+    toggle.classList.remove('active');
+    gsap.set(overlay, { display: 'none', yPercent: -100 });
+
+    const openMenu = () => {
+      isMenuOpen = true;
+      document.body.style.overflow = 'hidden'; // Bloquear scroll nativo
+      toggle.classList.add('active');
+      gsap.set(overlay, { display: 'flex' });
+      gsap.to(overlay, { yPercent: 0, duration: 0.8, ease: "expo.inOut" });
+      gsap.fromTo(document.querySelectorAll('.menu-link'), 
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.6, stagger: 0.1, delay: 0.4, ease: "power3.out" }
+      );
+    };
+
+    const closeMenu = () => {
+      isMenuOpen = false;
+      document.body.style.overflow = ''; // Restaurar scroll nativo
+      toggle.classList.remove('active');
+      gsap.to(overlay, { 
+        yPercent: -100, 
+        duration: 0.8, 
+        ease: "expo.inOut",
+        onComplete: () => gsap.set(overlay, { display: 'none' })
+      });
+    };
+
+    // Agregar evento al botón
+    toggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      isMenuOpen ? closeMenu() : openMenu();
+    });
+
+    // Cerrar el menú si se hace clic en cualquier enlace o botón de idioma
+    links.forEach(link => {
+      link.addEventListener('click', () => {
+        if (isMenuOpen) closeMenu();
+      });
+    });
+  };
+
+  // LIMPIEZA: Limpiar estado global antes de cambiar de página para que el body no quede trancado
+  document.addEventListener('astro:before-swap', () => {
+    document.body.style.overflow = '';
+    isMenuOpen = false;
+  });
+
+  document.addEventListener('astro:page-load', initMenu);
+</script>
+
+<style>
+  .menu-toggle {
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    align-items: center;
+    gap: 1rem;
+    z-index: 100000;
+    /* Visible solo en móviles. En desktop se oculta porque usaremos navegación normal */
+    display: none;
+  }
+  @media (max-width: 768px) {
+    .menu-toggle {
+      display: flex;
+    }
+  }
+
+  .menu-text {
+    font-size: 0.8rem;
+  }
+  .hamburger {
+    width: 30px;
+    height: 12px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .line {
+    width: 100%;
+    height: 1px;
+    background-color: var(--text-primary);
+    transition: transform 0.3s ease;
+  }
+  .menu-toggle.active .line-1 {
+    transform: translateY(5.5px) rotate(45deg);
+  }
+  .menu-toggle.active .line-2 {
+    transform: translateY(-5.5px) rotate(-45deg);
+  }
+
+  .menu-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100vh;
+    background-color: var(--bg-tertiary);
+    z-index: 99999;
+    display: none;
+    flex-direction: column;
+    transform: translateY(-100%);
+    will-change: transform;
+    padding: 6rem 2rem 2rem 2rem;
+  }
+  .menu-inner {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .menu-header {
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+  }
+  .menu-nav {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: center;
+    gap: 1rem;
+  }
+  .menu-link {
+    font-size: clamp(2.5rem, 10vw, 6rem);
+    color: var(--text-primary);
+    text-decoration: none;
+    line-height: 0.9;
+    position: relative;
+    width: max-content;
+    transition: color 0.3s;
+  }
+  .menu-link:hover {
+    color: var(--accent);
+  }
+  .menu-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--line);
+    padding-top: 1rem;
+  }
+  .lang-switch {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  .lang-btn {
+    text-decoration: none;
+    color: var(--text-muted);
+  }
+  .lang-btn.active {
+    color: var(--text-primary);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+</style>

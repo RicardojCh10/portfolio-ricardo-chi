@@ -1,0 +1,190 @@
+---
+import { getTranslations } from '../../../i18n/ui';
+
+const { lang, projects } = Astro.props;
+const t = getTranslations(lang);
+---
+
+<section id="projects" class="section">
+  <div class="container">
+    <div class="section-header" data-gsap="fade-up">
+      <span class="section-num mono text-accent">02 //</span>
+      <h2 class="display section-title" set:html={t.projectsTitle}></h2>
+    </div>
+  </div>
+    
+  <div class="swiper projects-swiper" data-gsap="fade-up">
+    <div class="swiper-wrapper">
+      {projects.map((project: any, index: number) => (
+        <div class="swiper-slide project-slide">
+          <div class="project-image-wrapper">
+            <img src={project.image} alt={project.title} class="project-image" loading="lazy" width="800" height="450" />
+          </div>
+          <div class="project-slide-content">
+            <div class="project-header">
+              <span class="mono text-accent">{project.subtitle}</span>
+              <span class="project-num mono text-muted">0{index + 1}</span>
+            </div>
+            <h3 class="display project-name">{project.title}</h3>
+            <p class="project-desc">{project.description}</p>
+            
+            <div class="project-footer mt-auto">
+              <div class="project-tech mb-4">
+                {project.tech.map((tech: string) => <span class="pill">{tech}</span>)}
+              </div>
+              <a href={`${t.contactUrl}?project=${encodeURIComponent(project.title)}`} class="btn btn-cta mono hover-target">
+                {t.discuss}
+              </a>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  import Swiper from 'swiper';
+  import { Autoplay } from 'swiper/modules';
+
+  let swiperInstance: Swiper | null = null;
+
+  const initSwiper = () => {
+    if (swiperInstance) {
+      swiperInstance.destroy(true, true);
+    }
+
+    const swiperEl = document.querySelector('.projects-swiper');
+    if (swiperEl) {
+      swiperInstance = new Swiper('.projects-swiper', {
+        modules: [Autoplay],
+        slidesPerView: 'auto',
+        spaceBetween: 24, // Menos espacio en móvil
+        autoplay: {
+          delay: 4000,
+          disableOnInteraction: true,
+        },
+        grabCursor: true,
+        breakpoints: {
+          768: {
+            spaceBetween: 48 // Espacio normal en desktop
+          }
+        }
+      });
+      // Asegurar stretch para Swiper
+      swiperEl.querySelector('.swiper-wrapper')?.setAttribute('style', 'align-items: stretch;');
+    }
+  };
+
+  document.addEventListener('astro:page-load', () => {
+    requestAnimationFrame(() => {
+      initSwiper();
+    });
+  });
+
+  document.addEventListener('astro:before-swap', () => {
+    if (swiperInstance) {
+      swiperInstance.destroy(true, true);
+      swiperInstance = null;
+    }
+  });
+</script>
+
+<style>
+  .mt-auto { margin-top: auto; }
+  .mb-4 { margin-bottom: 1.5rem; }
+
+  .section-header {
+    margin-bottom: 3rem;
+  }
+  .section-title {
+    font-size: clamp(2.5rem, 8vw, 6rem);
+  }
+
+  .btn-cta {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    border: 1px solid var(--text-primary);
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+  .btn-cta:hover {
+    background: var(--text-primary);
+    color: var(--bg-primary);
+  }
+
+  /* Swiper Projects */
+  .projects-swiper {
+    padding: 0 5%; 
+    padding-bottom: 2rem;
+  }
+  .project-slide {
+    width: 90%; /* Ocupa casi todo el ancho en móvil */
+    max-width: 800px;
+    height: auto; /* Swiper gestiona la altura, pero flex-grow lo estira si se configura stretch */
+    border: 1px solid var(--line);
+    background: var(--bg-secondary);
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.4s;
+    box-sizing: border-box;
+  }
+  @media (min-width: 1024px) {
+    .project-slide { width: 65%; }
+  }
+  .project-slide:hover {
+    border-color: var(--accent);
+  }
+  .project-image-wrapper {
+    width: 100%;
+    aspect-ratio: 16/9;
+    height: auto;
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+  }
+  @media (min-width: 768px) {
+    .project-image-wrapper { height: auto; }
+  }
+  .project-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .project-slide:hover .project-image {
+    transform: scale(1.05);
+  }
+  .project-slide-content {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+  @media (min-width: 768px) {
+    .project-slide-content { padding: 3rem; }
+  }
+  .project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  .project-name {
+    font-size: clamp(1.8rem, 4vw, 3.5rem);
+    margin: 0.5rem 0 1.5rem 0;
+    line-height: 1.1;
+  }
+  .project-desc {
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    font-size: clamp(0.95rem, 2vw, 1.1rem);
+    line-height: 1.6;
+  }
+  .project-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+</style>

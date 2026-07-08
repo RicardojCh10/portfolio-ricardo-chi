@@ -1,0 +1,78 @@
+---
+---
+<div id="custom-cursor" class="custom-cursor" aria-hidden="true" transition:persist="custom-cursor"></div>
+
+<script>
+  import { gsap } from 'gsap';
+
+  let isInitialized = false;
+  let onMouseMove: (e: MouseEvent) => void;
+
+  const initCursor = () => {
+    const cursor = document.getElementById('custom-cursor');
+    if (!cursor) return;
+
+    // Solo activar en dispositivos con mouse real (no touch)
+    if (window.matchMedia('(pointer: coarse)').matches) {
+      cursor.style.display = 'none';
+      return;
+    }
+
+    gsap.set(cursor, { xPercent: -50, yPercent: -50 });
+
+    const xTo = gsap.quickTo(cursor, "x", { duration: 0.2, ease: "power3" });
+    const yTo = gsap.quickTo(cursor, "y", { duration: 0.2, ease: "power3" });
+
+    if (!isInitialized) {
+      onMouseMove = (e: MouseEvent) => {
+        xTo(e.clientX);
+        yTo(e.clientY);
+      };
+      window.addEventListener("mousemove", onMouseMove);
+      isInitialized = true;
+    }
+
+    // Hover effect en enlaces y botones (el DOM es nuevo en page-load, así que reasignamos)
+    const links = document.querySelectorAll('a, button, .hover-target');
+    links.forEach(link => {
+      link.addEventListener('mouseenter', () => {
+        gsap.to(cursor, { scale: 3, backgroundColor: 'transparent', border: '1px solid var(--accent)', duration: 0.3 });
+      });
+      link.addEventListener('mouseleave', () => {
+        gsap.to(cursor, { scale: 1, backgroundColor: 'var(--accent)', border: 'none', duration: 0.3 });
+      });
+    });
+  };
+
+  document.addEventListener('astro:page-load', initCursor);
+  
+  // Limpieza vital de memoria
+  document.addEventListener('astro:before-swap', () => {
+    if (isInitialized && onMouseMove) {
+      window.removeEventListener('mousemove', onMouseMove);
+      isInitialized = false;
+    }
+  });
+</script>
+
+<style>
+  .custom-cursor {
+    position: fixed;
+    top: 0; left: 0;
+    width: 12px; height: 12px;
+    background-color: var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 10000;
+    mix-blend-mode: difference;
+    will-change: transform;
+  }
+  
+  /* Ocultar cursor nativo */
+  :global(body) {
+    cursor: none;
+  }
+  :global(a), :global(button) {
+    cursor: none;
+  }
+</style>

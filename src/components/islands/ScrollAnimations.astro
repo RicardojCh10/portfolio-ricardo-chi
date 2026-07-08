@@ -1,0 +1,51 @@
+---
+/**
+ * ============================================================
+ *  🏝️ ISLA: ScrollAnimations.astro
+ * ============================================================
+ * 
+ * ¿POR QUÉ ES UNA ISLA?
+ * ----------------------
+ * Usa IntersectionObserver (API del navegador) para detectar
+ * cuándo las secciones entran al viewport y aplicar
+ * animaciones CSS de aparición (fade-in, slide-up).
+ * 
+ * CÓMO SE USA:
+ * - Se incluye UNA sola vez en el layout principal
+ * - Busca todos los elementos con la clase `animate-on-scroll`
+ * - Les agrega la clase `is-visible` cuando entran al viewport
+ * - Las animaciones se definen en global.css
+ *
+ * RENDIMIENTO:
+ * - IntersectionObserver es nativo y muy eficiente
+ * - No usa scroll listeners (no bloquea el main thread)
+ * - Solo se ejecuta una vez por elemento (unobserve)
+ * ============================================================
+ */
+---
+
+<!-- Este componente no renderiza HTML visible -->
+<!-- Solo inyecta el script de observación -->
+
+<script>
+  // Crear el observer una sola vez
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target); // Ya no necesitamos observar
+        }
+      });
+    },
+    {
+      threshold: 0.1, // Se activa cuando el 10% del elemento es visible
+      rootMargin: '0px 0px -50px 0px', // Se activa un poco antes de llegar
+    }
+  );
+
+  // Observar todos los elementos con la clase animate-on-scroll
+  document.querySelectorAll('.animate-on-scroll').forEach((el) => {
+    observer.observe(el);
+  });
+</script>

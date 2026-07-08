@@ -1,0 +1,34 @@
+---
+import { getTranslations } from '../../../i18n/ui';
+
+const { lang } = Astro.props;
+const t = getTranslations(lang);
+---
+
+<section id="collaboration" class="section">
+  <div class="container text-center" data-gsap="fade-up">
+    <p class="mono text-muted mb-4">{t.collabTitle.toUpperCase()}</p>
+    <a href={t.contactUrl} class="display cta-link hover-target">
+      {t.startProject}
+    </a>
+  </div>
+</section>
+
+<style>
+  .mb-4 { margin-bottom: 1.5rem; }
+
+  /* Cta / Collaboration */
+  .cta-link {
+    font-size: clamp(2rem, 6vw, 5rem);
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: color 0.3s;
+    /* Prevención de desbordamiento horizontal en botones largos */
+    display: inline-block;
+    max-width: 100%;
+    word-break: break-word;
+  }
+  .cta-link:hover {
+    color: var(--accent);
+  }
+</style>

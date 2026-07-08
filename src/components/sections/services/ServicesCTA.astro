@@ -1,0 +1,87 @@
+---
+import { getTranslations } from '../../../i18n/ui';
+
+const { lang = 'es' } = Astro.props;
+const t = getTranslations(lang);
+const { services } = t;
+---
+
+<section class="section cta-section">
+  <div class="container text-center" data-gsap="fade-up">
+    <h2 class="display cta-title">{services.ctaHero}</h2>
+    <p class="cta-subtitle text-secondary mb-8">{services.ctaSubtitle}</p>
+    
+    <div class="cta-actions">
+      <a href={lang === 'en' ? '/en/contacto' : '/contacto'} class="btn btn-primary mono hover-target">
+        {services.btnBookCall}
+      </a>
+      <a href={lang === 'en' ? '/en/contacto' : '/contacto'} class="btn btn-outline mono hover-target">
+        {services.btnQuote}
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-section {
+    padding: 8rem 0;
+    border-bottom: none;
+  }
+  
+  .text-center {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .cta-title {
+    font-size: clamp(3rem, 10vw, 8rem);
+    line-height: 1;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+  }
+  
+  .cta-subtitle {
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    max-width: 600px;
+    margin: 0 auto 3rem auto;
+  }
+  
+  .mb-8 { margin-bottom: 4rem; }
+  
+  .cta-actions {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .btn {
+    display: inline-block;
+    padding: 1.2rem 3rem;
+    text-decoration: none;
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-primary {
+    background: var(--text-primary);
+    color: var(--bg-primary);
+    border: 1px solid var(--text-primary);
+  }
+  .btn-primary:hover {
+    transform: translateY(-3px);
+  }
+  
+  .btn-outline {
+    background: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--text-primary);
+  }
+  .btn-outline:hover {
+    background: var(--text-primary);
+    color: var(--bg-primary);
+  }
+</style>

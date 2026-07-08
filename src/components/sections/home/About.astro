@@ -1,0 +1,38 @@
+---
+import { getTranslations } from '../../../i18n/ui';
+
+const { lang, personal } = Astro.props;
+const t = getTranslations(lang);
+---
+
+<section id="about" class="section pb-0">
+  <div class="container">
+    <div class="section-header" data-gsap="fade-up">
+      <span class="section-num mono text-accent">06 //</span>
+      <h2 class="display section-title">{t.aboutTitle}</h2>
+    </div>
+    <div class="about-content text-secondary" data-gsap="fade-up">
+      <p class="mb-4 about-text">
+        {personal.summary}
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .pb-0 { padding-bottom: 0 !important; }
+  .mb-4 { margin-bottom: 1.5rem; }
+
+  .section-header {
+    margin-bottom: 3rem;
+  }
+  .section-title {
+    font-size: clamp(2.5rem, 8vw, 6rem);
+  }
+
+  .about-text {
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    line-height: 1.8;
+    max-width: 800px;
+  }
+</style>

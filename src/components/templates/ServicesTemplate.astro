@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import GsapAnimations from '../../components/islands/GsapAnimations.astro';
+
+// Componentes Atómicos
+import ServicesHero from '../../components/sections/services/ServicesHero.astro';
+import CoreServices from '../../components/sections/services/CoreServices.astro';
+import Methodology from '../../components/sections/services/Methodology.astro';
+import SectorsMarquee from '../../components/sections/services/SectorsMarquee.astro';
+import BenefitsCases from '../../components/sections/services/BenefitsCases.astro';
+import FaqSection from '../../components/sections/services/FaqSection.astro';
+import ServicesCTA from '../../components/sections/services/ServicesCTA.astro';
+
+const { lang = 'es' } = Astro.props;
+---
+
+<BaseLayout lang={lang}>
+  
+  <ServicesHero lang={lang} />
+  
+  <CoreServices lang={lang} />
+  
+  <Methodology lang={lang} />
+  
+  <SectorsMarquee lang={lang} />
+  
+  <BenefitsCases lang={lang} />
+  
+  <FaqSection lang={lang} />
+  
+  <ServicesCTA lang={lang} />
+
+  <GsapAnimations />
+
+</BaseLayout>

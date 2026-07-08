@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import GsapAnimations from '../../components/islands/GsapAnimations.astro';
+
+// Componentes Atómicos del Home
+import Hero from '../../components/sections/home/Hero.astro';
+import Benefits from '../../components/sections/home/Benefits.astro';
+import ProjectsSlider from '../../components/sections/home/ProjectsSlider.astro';
+import Stack from '../../components/sections/home/Stack.astro';
+import Experience from '../../components/sections/home/Experience.astro';
+import About from '../../components/sections/home/About.astro';
+import Collaboration from '../../components/sections/home/Collaboration.astro';
+
+// Import global css styles para dependencias (Swiper)
+import 'swiper/css';
+
+const { 
+  lang = 'es',
+  personal,
+  projects,
+  skills,
+  experience,
+  education
+} = Astro.props;
+---
+
+<BaseLayout lang={lang}>
+  
+  <Hero lang={lang} personal={personal} />
+  
+  <Benefits lang={lang} />
+  
+  <ProjectsSlider lang={lang} projects={projects} />
+  
+  <Stack lang={lang} skills={skills} />
+  
+  <Experience lang={lang} experience={experience} education={education} />
+  
+  <About lang={lang} personal={personal} />
+  
+  <Collaboration lang={lang} />
+
+  <GsapAnimations />
+
+</BaseLayout>

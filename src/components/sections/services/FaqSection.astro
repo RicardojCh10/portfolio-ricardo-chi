@@ -1,0 +1,100 @@
+---
+import { getTranslations } from '../../../i18n/ui';
+
+const { lang = 'es' } = Astro.props;
+const t = getTranslations(lang);
+const { services } = t;
+---
+
+<section class="section">
+  <div class="container">
+    <div class="faq-wrapper" data-gsap="fade-up">
+      <h2 class="display section-title mb-8">{services.faqTitle}</h2>
+      
+      <div class="faq-list">
+        {services.faqs.map((faq) => (
+          <details class="faq-item">
+            <summary class="faq-question mono hover-target">
+              {faq.q}
+              <span class="faq-icon text-accent">+</span>
+            </summary>
+            <div class="faq-answer text-secondary">
+              <p>{faq.a}</p>
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .section-title {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    text-align: center;
+  }
+  
+  .mb-8 { margin-bottom: 4rem; }
+  
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .faq-item {
+    border: 1px solid var(--line);
+    background: var(--bg-secondary);
+    transition: border-color 0.3s;
+  }
+  
+  .faq-item:hover {
+    border-color: var(--text-primary);
+  }
+  
+  .faq-question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem;
+    font-size: 1.1rem;
+    cursor: pointer;
+    list-style: none; /* Ocultar flecha por defecto */
+  }
+  
+  /* Ocultar flecha webkit */
+  .faq-question::-webkit-details-marker {
+    display: none;
+  }
+  
+  .faq-icon {
+    font-size: 1.5rem;
+    transition: transform 0.3s;
+  }
+  
+  /* Cuando está abierto */
+  details[open] .faq-item {
+    border-color: var(--accent);
+  }
+  
+  details[open] .faq-icon {
+    transform: rotate(45deg);
+  }
+  
+  .faq-answer {
+    padding: 0 2rem 2rem 2rem;
+    font-size: 1rem;
+    line-height: 1.6;
+    animation: slideDown 0.3s ease-out;
+  }
+  
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>

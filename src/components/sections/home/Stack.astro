@@ -1,0 +1,113 @@
+---
+import { getTranslations } from '../../../i18n/ui';
+
+const { lang, skills } = Astro.props;
+const t = getTranslations(lang);
+---
+
+<section id="stack" class="section">
+  <div class="container">
+    <div class="section-header" data-gsap="fade-up">
+      <span class="section-num mono text-accent">03 //</span>
+      <h2 class="display section-title" set:html={t.stackTitle}></h2>
+    </div>
+    
+    <div class="stack-categories">
+      {skills.map((group: any) => (
+        <div class="stack-group" data-gsap="fade-up">
+          <h3 class="mono text-accent mb-4">{group.category.toUpperCase()}</h3>
+          <div class="stack-grid">
+            {group.items.map((skill: any) => (
+              <div class="stack-card hover-target">
+                <img src={skill.icon} alt={skill.name} class="stack-icon" width="48" height="48" loading="lazy" />
+                <div class="stack-text-content">
+                  <h4 class="stack-name display">{skill.name}</h4>
+                  <p class="stack-desc text-secondary">{skill.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .mb-4 { margin-bottom: 1.5rem; }
+
+  .section-header {
+    margin-bottom: 3rem;
+  }
+  .section-title {
+    font-size: clamp(2.5rem, 8vw, 6rem);
+  }
+
+  .stack-categories {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+  }
+  @media (min-width: 768px) {
+    .stack-categories { gap: 6rem; }
+  }
+
+  /* Grid Responsivo para Stack */
+  .stack-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    align-items: stretch;
+  }
+  @media (min-width: 768px) {
+    .stack-grid {
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+  }
+
+  .stack-card {
+    display: flex;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    border: 1px solid var(--line);
+    background: var(--bg-secondary);
+    height: 100%;
+    transition: transform 0.3s, border-color 0.3s;
+    align-items: flex-start;
+  }
+  @media (min-width: 768px) {
+    .stack-card { padding: 2rem; }
+  }
+  
+  .stack-text-content {
+    min-width: 0; /* Previene desbordamiento en Flexbox */
+  }
+
+  .stack-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent);
+  }
+
+  .stack-icon {
+    flex-shrink: 0;
+    filter: grayscale(100%) brightness(200%);
+    transition: filter 0.3s;
+  }
+  .stack-card:hover .stack-icon {
+    filter: grayscale(0%) brightness(100%);
+  }
+
+  .stack-name {
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    margin-bottom: 0.5rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.2;
+  }
+
+  .stack-desc {
+    font-size: clamp(0.85rem, 2vw, 0.95rem);
+    line-height: 1.5;
+  }
+</style>

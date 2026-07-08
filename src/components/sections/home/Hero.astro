@@ -1,0 +1,171 @@
+---
+import ThreeParticles from '../../islands/ThreeParticles.astro';
+import { getTranslations } from '../../../i18n/ui';
+
+const { lang, personal } = Astro.props;
+const t = getTranslations(lang);
+---
+
+<section id="hero" class="hero-section">
+  <ThreeParticles />
+  <div class="container hero-container relative">
+    <div class="hero-meta mono" data-gsap="fade-up">
+      <span>{t.portfolio} © {new Date().getFullYear()}</span>
+      <span class="hero-status"><span class="pulse-dot"></span> {t.available}</span>
+    </div>
+    
+    <h1 class="hero-title display" data-gsap="sweep">
+      <span class="block">_RICARDO</span>
+      <span class="block text-right">CHI<span class="text-accent">_</span></span>
+    </h1>
+    
+    <div class="hero-footer" data-gsap="fade-up">
+      <span class="scroll-indicator mono">{t.scroll}</span>
+      <div class="hero-bio-container text-right">
+        <p class="hero-bio mb-4">
+          — {personal.bio ? personal.bio : t.defaultBio}
+        </p>
+        <a href={t.contactUrl} class="btn btn-primary mono">{t.letsTalk}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Marquee Separator -->
+<div class="marquee-border" aria-hidden="true">
+  <div class="marquee-track">
+    <!-- Primer bloque -->
+    <div class="marquee-content">
+      <span class="marquee-item"><span class="display marquee-text">CHAT BOTS</span><span class="text-accent marquee-icon">◆</span></span>
+      <span class="marquee-item"><span class="display marquee-text">SITIOS WEB</span><span class="text-accent marquee-icon">◆</span></span>
+      <span class="marquee-item"><span class="display marquee-text">E-COMMERCE</span><span class="text-accent marquee-icon">◆</span></span>
+      <span class="marquee-item"><span class="display marquee-text">DISEÑO UX/UI</span><span class="text-accent marquee-icon">◆</span></span>
+      <span class="marquee-item"><span class="display marquee-text">APLICACIONES WEB</span><span class="text-accent marquee-icon">◆</span></span>
+      <span class="marquee-item"><span class="display marquee-text">SISTEMAS DE GESTIÓN</span><span class="text-accent marquee-icon">◆</span></span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .relative { position: relative; }
+  .block { display: block; }
+  .text-right { text-align: right; }
+  .mb-4 { margin-bottom: 1.5rem; }
+
+  /* Hero */
+  .hero-section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-top: var(--header-height);
+    padding-bottom: 2rem;
+    position: relative;
+    /* Evita desbordamiento de partículas o texto enorme */
+    overflow: hidden; 
+  }
+  .hero-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    z-index: 2;
+  }
+  .hero-meta {
+    display: flex;
+    justify-content: space-between;
+    color: var(--text-muted);
+    font-size: clamp(0.7rem, 2vw, 0.85rem);
+    margin-bottom: 2rem;
+  }
+  .hero-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .pulse-dot {
+    width: 8px; height: 8px;
+    background-color: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(34, 211, 238, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0); }
+  }
+  .hero-title {
+    font-size: clamp(2.5rem, 10vw, 12rem);
+    color: var(--text-primary);
+    line-height: 0.9;
+  }
+  
+  .hero-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 4rem;
+    gap: 2rem;
+  }
+  @media (max-width: 768px) {
+    .hero-footer {
+      flex-direction: column-reverse;
+      align-items: flex-end;
+    }
+  }
+  .hero-bio {
+    max-width: 400px;
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    color: var(--text-secondary);
+  }
+
+  .btn-primary {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background: var(--text-primary);
+    color: var(--bg-primary);
+    text-decoration: none;
+    transition: transform 0.3s;
+  }
+  .btn-primary:hover {
+    transform: translateY(-3px);
+  }
+
+  /* Marquee Refactorizado (Referencia Fluida) */
+  .marquee-border {
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 1rem 0;
+    overflow: hidden;
+    width: 100vw;
+    background: var(--bg-primary);
+  }
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    align-items: center;
+    white-space: nowrap;
+    animation: marquee 25s linear infinite;
+    will-change: transform;
+  }
+  .marquee-content {
+    display: flex;
+    align-items: center;
+  }
+  .marquee-item {
+    display: flex;
+    align-items: center;
+  }
+  .marquee-text {
+    padding: 0 1.5rem;
+    font-size: clamp(1.6rem, 3.5vw, 2.8rem);
+  }
+  .marquee-icon {
+    font-size: clamp(1rem, 2vw, 1.6rem);
+  }
+  
+  @keyframes marquee {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-50%, 0, 0); }
+  }
+</style>

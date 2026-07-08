@@ -1,0 +1,186 @@
+---
+/**
+ * ============================================================
+ *  🏝️ ISLA: MobileNav.astro
+ * ============================================================
+ * 
+ * ¿POR QUÉ ES UNA ISLA?
+ * ----------------------
+ * Este componente NECESITA JavaScript en el cliente porque:
+ * - Abre/cierra el menú hamburguesa (toggle de clases CSS)
+ * - Escucha clicks y eventos de teclado (Escape)
+ * - Modifica el DOM dinámicamente (aria-expanded, body scroll lock)
+ *
+ * ¿CÓMO FUNCIONA LA ISLA?
+ * ------------------------
+ * En Astro, por defecto NADA de JS se envía al navegador.
+ * Los componentes .astro se renderizan en el servidor y llegan
+ * como HTML+CSS estático. Esto hace el sitio ultra-rápido.
+ *
+ * Pero para cosas interactivas (menús, formularios, animaciones
+ * complejas), necesitamos JS en el cliente. Ahí es donde entran
+ * las "islas":
+ *
+ * OPCIÓN A: <script> tag en un .astro (lo que usamos aquí)
+ *   → El JS en <script> se empaqueta y envía al cliente
+ *   → El HTML sigue siendo estático
+ *   → Ideal para interacciones simples (toggle, scroll, etc.)
+ *
+ * OPCIÓN B: client:* directive con React/Vue/Svelte
+ *   → <ReactComponent client:load />
+ *   → Hidrata el componente en el cliente con el framework
+ *   → Ideal para UI complejas con estado reactivo
+ *
+ * En ESTE proyecto solo usamos Opción A porque nuestras
+ * interacciones son simples y no necesitamos un framework.
+ * ============================================================
+ */
+---
+
+<!-- Botón hamburguesa (visible solo en móvil) -->
+<button
+  id="mobile-nav-toggle"
+  class="mobile-nav__toggle"
+  aria-label="Abrir menú de navegación"
+  aria-expanded="false"
+  aria-controls="mobile-nav-menu"
+>
+  <span class="mobile-nav__bar"></span>
+  <span class="mobile-nav__bar"></span>
+  <span class="mobile-nav__bar"></span>
+</button>
+
+<!-- Panel del menú móvil -->
+<div id="mobile-nav-menu" class="mobile-nav__menu" role="dialog" aria-hidden="true">
+  <nav class="mobile-nav__links">
+    <a href="#hero" class="mobile-nav__link">Inicio</a>
+    <a href="#servicios" class="mobile-nav__link">Servicios</a>
+    <a href="#tech" class="mobile-nav__link">Tech Stack</a>
+    <a href="#proyectos" class="mobile-nav__link">Proyectos</a>
+    <a href="#about" class="mobile-nav__link">Sobre mí</a>
+    <a href="/blog" class="mobile-nav__link">Blog</a>
+    <a href="#contacto" class="mobile-nav__link mobile-nav__link--cta">Contacto</a>
+  </nav>
+</div>
+
+<style>
+  /* Botón hamburguesa - solo visible en móvil */
+  .mobile-nav__toggle {
+    display: none; /* Se muestra via media query en global.css */
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    z-index: 1001;
+  }
+
+  .mobile-nav__bar {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--text-primary);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  /* Animación X cuando está abierto */
+  .mobile-nav__toggle[aria-expanded="true"] .mobile-nav__bar:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+  .mobile-nav__toggle[aria-expanded="true"] .mobile-nav__bar:nth-child(2) {
+    opacity: 0;
+  }
+  .mobile-nav__toggle[aria-expanded="true"] .mobile-nav__bar:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+  }
+
+  /* Panel del menú */
+  .mobile-nav__menu {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    height: 100vh;
+    background: var(--bg-primary);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .mobile-nav__menu[aria-hidden="false"] {
+    right: 0;
+  }
+
+  .mobile-nav__links {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    text-align: center;
+  }
+
+  .mobile-nav__link {
+    font-size: 1.5rem;
+    color: var(--text-primary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+  }
+
+  .mobile-nav__link:hover {
+    color: var(--text-secondary);
+  }
+
+  @media (min-width: 769px) {
+    .mobile-nav__toggle,
+    .mobile-nav__menu {
+      display: none !important;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .mobile-nav__toggle {
+      display: flex;
+    }
+  }
+</style>
+
+<!--
+  ⚡ SCRIPT DE ISLA
+  Este <script> se empaqueta y envía al navegador.
+  Es el JavaScript que hace interactivo el menú.
+-->
+<script>
+  const toggle = document.getElementById('mobile-nav-toggle');
+  const menu = document.getElementById('mobile-nav-menu');
+  const links = menu?.querySelectorAll('.mobile-nav__link');
+
+  function openMenu() {
+    toggle?.setAttribute('aria-expanded', 'true');
+    menu?.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMenu() {
+    toggle?.setAttribute('aria-expanded', 'false');
+    menu?.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  toggle?.addEventListener('click', () => {
+    const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+    isOpen ? closeMenu() : openMenu();
+  });
+
+  // Cerrar al hacer click en un link
+  links?.forEach((link) => {
+    link.addEventListener('click', closeMenu);
+  });
+
+  // Cerrar con Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeMenu();
+  });
+</script>

@@ -4,8 +4,9 @@
 import '../styles/global.css';
 import type { ImageMetadata } from 'astro';
 import FallbackImage from '../assets/blog-placeholder-1.jpg';
-import { SITE_TITLE } from '../consts';
+import { SITE } from '../data/site';
 import { Font } from 'astro:assets';
+import { ClientRouter } from 'astro:transitions';
 
 interface Props {
 	title: string;
@@ -27,12 +28,19 @@ const { title, description, image = FallbackImage } = Astro.props;
 <link
 	rel="alternate"
 	type="application/rss+xml"
-	title={SITE_TITLE}
+	title={SITE.title}
 	href={new URL('rss.xml', Astro.site)}
 />
 <meta name="generator" content={Astro.generator} />
 
-<Font cssVariable="--font-atkinson" preload />
+<Font cssVariable="--font-inter" preload />
+<style is:global>
+  @font-face {
+    font-family: 'Inter';
+    font-display: swap;
+  }
+</style>
+<ClientRouter />
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />

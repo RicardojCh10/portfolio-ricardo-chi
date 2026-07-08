@@ -1,0 +1,195 @@
+---
+import { getTranslations } from "../../../i18n/ui";
+
+const { lang = "es" } = Astro.props;
+const t = getTranslations(lang);
+const { services } = t;
+---
+
+<section class="section">
+  <div class="container">
+    <h2 class="display text-4xl section-title mb-8" data-gsap="fade-up">
+      {services.coreTitle}
+    </h2>
+
+    <div class="core-grid">
+      {
+        services.coreServices.map((service, index) => (
+          <div class="gsap-wrapper" data-gsap="fade-up">
+            <div class="flip-card-container" tabindex="0">
+              <div class="flip-card">
+                <div class="flip-card-front">
+                  <div class="card-header">
+                    <span class="core-id mono text-xl text-accent">
+                      {service.id}.
+                    </span>
+                  </div>
+                  <h3 class="core-title display text-3xl">{service.title}</h3>
+                  <div class="flip-indicator mono text-xs text-muted">
+                    Hover to flip ↗
+                  </div>
+                </div>
+
+                <div class="flip-card-back">
+                  <div class="back-content">
+                    <p class=" mono text-accent  mb-2 text-base">
+                      {service.subtitle}
+                    </p>
+                    <p class="core-desc text-secondary text-sm mb-4">
+                      {service.desc}
+                    </p>
+
+                    <ul class="text-secondary  w-full ">
+                      {service.list.map((item: string) => (
+                        <li class="core-list-item">
+                          <span class="text-accent bullet">◆</span>
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <a
+                    href={lang === "en" ? "/en/contacto" : "/contacto"}
+                    class="btn btn-outline mono text-sm"
+                  >
+                    {service.cta}
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .section-title {
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 1.5rem;
+  }
+
+  .mb-8 {
+    margin-bottom: 4rem;
+  }
+
+  .core-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: stretch;
+  }
+
+  /* GRID ACTUALIZADO A 2 COLUMNAS */
+  @media (min-width: 768px) {
+    .core-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  /* Wrapper aislando GSAP del contexto 3D */
+  .gsap-wrapper {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* FLIP CARD CSS 3D */
+  .flip-card-container {
+    perspective: 1000px;
+    -webkit-perspective: 1000px;
+    height: 420px; /* Altura equilibrada profesionalmente */
+    width: 100%;
+    cursor: pointer;
+    outline: none;
+  }
+
+  .flip-card {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+  }
+
+  .flip-card-container:hover .flip-card,
+  .flip-card-container:focus .flip-card,
+  .flip-card-container:active .flip-card {
+    transform: rotateY(180deg);
+  }
+
+  .flip-card-front,
+  .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border: 1px solid var(--line);
+    background: var(--bg-secondary);
+    padding: 3rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* FRONT CARD */
+  .flip-card-front {
+    transform: rotateY(0deg);
+  }
+
+  .card-header {
+    margin-bottom: 2rem;
+  }
+
+  .core-title {
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    margin-top: auto;
+  }
+
+  .flip-indicator {
+    margin-top: 2rem;
+    opacity: 0.5;
+  }
+
+  /* BACK CARD */
+  .flip-card-back {
+    transform: rotateY(180deg);
+    background: var(--bg-primary);
+    border-color: var(--accent);
+    justify-content: flex-start;
+    align-items: flex-start;
+    z-index: 2;
+  }
+
+  .core-list-item {
+    /* color: var(--text-primary); */
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+    line-height: 2;
+  }
+
+  .bullet {
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+  }
+
+  .btn-outline {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--text-primary);
+    text-decoration: none;
+    transition: all 0.3s;
+    margin-top: auto;
+  }
+
+  .btn-outline:hover {
+    background: var(--text-primary);
+    color: var(--bg-primary);
+  }
+</style>

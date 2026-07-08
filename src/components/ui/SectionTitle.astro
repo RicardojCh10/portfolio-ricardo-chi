@@ -1,0 +1,71 @@
+---
+/**
+ * SectionTitle.astro
+ * ===================
+ * Componente reutilizable para los títulos de cada sección.
+ * Es un componente ESTÁTICO de Astro (no es isla).
+ * Se renderiza en el servidor y se envía como HTML puro.
+ *
+ * Props:
+ *   - title: Texto del título
+ *   - subtitle: Descripción breve (opcional)
+ *   - align: Alineación del texto (opcional, default: 'center')
+ */
+
+interface Props {
+  title: string;
+  subtitle?: string;
+  align?: 'left' | 'center';
+}
+
+const { title, subtitle, align = 'center' } = Astro.props;
+---
+
+<div class={`section-title ${align === 'left' ? 'section-title--left' : ''}`}>
+  <span class="section-title__label">{title}</span>
+  <h2 class="section-title__heading">{title}</h2>
+  {subtitle && <p class="section-title__subtitle">{subtitle}</p>}
+</div>
+
+<style>
+  .section-title {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .section-title--left {
+    text-align: left;
+  }
+
+  .section-title__label {
+    display: inline-block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+    border: 1px solid var(--border);
+    padding: 0.25rem 1rem;
+    border-radius: 100px;
+  }
+
+  .section-title__heading {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0.75rem 0;
+    line-height: 1.1;
+  }
+
+  .section-title__subtitle {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .section-title--left .section-title__subtitle {
+    margin: 0;
+  }
+</style>
