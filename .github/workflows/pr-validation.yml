@@ -1,0 +1,40 @@
+name: PR Validation & DevSecOps
+
+on:
+  pull_request:
+    branches: ["main", "dev"]
+
+jobs:
+  build-and-scan:
+    name: Compilación y Escaneo de Seguridad
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Verificar compilación de Astro
+        run: npm run build
+
+      - name: Construir imagen Docker de prueba
+        run: docker build -t portafolio-test:latest .
+
+      - name: Escanear contenedor con Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: "portafolio-test:latest"
+          format: "table"
+          # Fallará el pipeline (exit-code 1) solo si encuentra vulnerabilidades críticas o altas
+          exit-code: "1"
+          ignore-unfixed: true
+          vuln-type: "os,library"
+          severity: "CRITICAL,HIGH"
