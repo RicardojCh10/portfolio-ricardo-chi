@@ -1,43 +1,48 @@
 ---
-import { getTranslations } from '../../../i18n/ui';
+import { getTranslations } from "../../../i18n/ui";
 
-const { lang = 'es' } = Astro.props;
+const { lang = "es" } = Astro.props;
 const t = getTranslations(lang);
 const { services } = t;
 ---
 
 <section class="section">
   <div class="container">
-    <h2 class="display section-title mb-8" data-gsap="fade-up">{services.methodologyTitle}</h2>
-    
+    <h2 class="display section-title text-4xl mb-8" data-gsap="fade-up">
+      {services.methodologyTitle}
+    </h2>
+
     <div class="methodology-container">
-      {services.methodologySteps.map((step, index) => (
-        <div class="methodology-step" data-gsap="fade-up">
-          <div class="step-number mono text-accent">{step.step}</div>
-          <div class="step-content">
-            <h3 class="display step-name">{step.name}</h3>
-            <p class="step-desc text-secondary">{step.desc}</p>
+      {
+        services.methodologySteps.map((step, index) => (
+          <div class="methodology-step" data-gsap="fade-up">
+            <div class="step-number mono text-accent">{step.step}</div>
+            <div class="step-content">
+              <h3 class="display step-name text-2xl">{step.name}</h3>
+              <p class="step-desc text-secondary">{step.desc}</p>
+            </div>
           </div>
-        </div>
-      ))}
+        ))
+      }
     </div>
   </div>
 </section>
 
 <style>
   .section-title {
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
     text-align: right;
   }
-  
-  .mb-8 { margin-bottom: 4rem; }
-  
+
+  .mb-8 {
+    margin-bottom: 4rem;
+  }
+
   .methodology-container {
     display: flex;
     flex-direction: column;
     border-top: 1px solid var(--line);
   }
-  
+
   .methodology-step {
     display: grid;
     grid-template-columns: auto 1fr;
@@ -46,22 +51,21 @@ const { services } = t;
     border-bottom: 1px solid var(--line);
     align-items: center;
   }
-  
+
   .step-number {
     font-size: clamp(3rem, 8vw, 6rem);
     line-height: 0.8;
   }
-  
+
   .step-name {
-    font-size: clamp(2rem, 4vw, 3rem);
     margin-bottom: 0.5rem;
   }
-  
+
   .step-desc {
     font-size: 1.1rem;
     max-width: 500px;
   }
-  
+
   @media (max-width: 768px) {
     .methodology-step {
       grid-template-columns: 1fr;

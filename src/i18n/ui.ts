@@ -246,24 +246,76 @@ export const getTranslations = (lang: string) => {
             "Startups",
           ],
 
-      benefitsTitle: isEs ? "Beneficios" : "Benefits",
-      benefitsList: isEs
-        ? ["Más eficiencia", "Menos errores", "Mayor crecimiento", "Innovación"]
-        : ["More efficiency", "Fewer errors", "Higher growth", "Innovation"],
-
-      casesTitle: isEs ? "Casos de Estudio" : "Case Studies",
-      casesList: isEs
+      // SECCIÓN 1: La Propuesta de Valor (Beneficios tangibles)
+      valuePropsTitle: isEs
+        ? "Todo lo que tu negocio necesita para operar y vender en internet"
+        : "Everything your business needs to operate and sell online",
+      valuePropsSubtitle: isEs
+        ? 'No hacemos sitios "bonitos" por hacerlos. Construimos plataformas rápidas, seguras y estructuradas para captar clientes corporativos.'
+        : 'We don’t just make "pretty" sites. We build fast, secure, and structured platforms to capture corporate clients.',
+      valueProps: isEs
         ? [
-            "Sistema de gestión",
-            "Landing de leads",
-            "Dashboard empresarial",
-            "Aplicación móvil",
+            {
+              title: "Sitios rápidos que retienen",
+              desc: "Una web lenta hace que la gente se vaya. Optimizamos el rendimiento al milisegundo para mejorar la experiencia y tu posición en Google.",
+              cta: "Optimizar rendimiento",
+            },
+            {
+              title: "Seguridad y estabilidad 24/7",
+              desc: "Infraestructura robusta desde el primer día. Respaldos y protección avanzada para que tu operación nunca se detenga.",
+              cta: "Proteger mi negocio",
+            },
+            {
+              title: "Más prospectos, cero fricción",
+              desc: "Integramos flujos de conversión directos, automatizaciones y canales de contacto para que el cliente ideal llegue a ti sin barreras.",
+              cta: "Generar más contactos",
+            },
+            {
+              title: "Arquitectura lista para escalar",
+              desc: "No tendrás que rehacer tu plataforma en 2 años. Desarrollamos con tecnología moderna que crece al mismo ritmo que tus ventas.",
+              cta: "Escalar mi tecnología",
+            },
           ]
         : [
-            "Management system",
-            "Lead landing page",
-            "Enterprise dashboard",
-            "Mobile app",
+            {
+              title: "Fast sites that retain",
+              desc: "A slow web drives people away. We optimize performance to the millisecond to improve experience and your Google ranking.",
+              cta: "Optimize performance",
+            },
+            {
+              title: "24/7 Security & Stability",
+              desc: "Robust infrastructure from day one. Backups and advanced protection so your operation never stops.",
+              cta: "Protect my business",
+            },
+            {
+              title: "More leads, zero friction",
+              desc: "We integrate direct conversion flows, automations, and contact channels so the ideal client reaches you without barriers.",
+              cta: "Generate more contacts",
+            },
+            {
+              title: "Architecture ready to scale",
+              desc: "You won’t have to rebuild your platform in 2 years. We develop with modern tech that grows alongside your sales.",
+              cta: "Scale my technology",
+            },
+          ],
+
+      // SECCIÓN 2: El dolor de la competencia (SEO y Crecimiento)
+      growthTitle: isEs
+        ? "¿Tus clientes no te encuentran o se van con la competencia?"
+        : "Do your clients find you or go to the competition?",
+      growthHighlight: isEs
+        ? "El 85% de tus prospectos investigan en internet antes de comprar. Tu sitio web debe ser tu mejor vendedor."
+        : "85% of your prospects research online before buying. Your website should be your best salesperson.",
+      growthParagraphs: isEs
+        ? [
+            "Aparecer en los motores de búsqueda cuando alguien necesita tus servicios marca la diferencia entre cerrar un contrato corporativo o perderlo.",
+            "No se trata de perseguir clientes de forma invasiva. Se trata de estar posicionado con autoridad técnica justo en el momento en que buscan lo que ofreces.",
+            "Si tu plataforma actual carga lento, no genera confianza o ni siquiera aparece, estás perdiendo dinero hoy mismo.",
+          ]
+        : [
+            "Appearing in search engines when someone needs your services makes the difference between closing a corporate contract or losing it.",
+            "It’s not about chasing clients invasively. It’s about being positioned with technical authority exactly when they search for what you offer.",
+            "If your current platform loads slowly, doesn’t build trust, or doesn’t even show up, you are losing money today.",
           ],
 
       faqTitle: isEs ? "Preguntas Frecuentes" : "FAQ",

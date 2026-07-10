@@ -1,112 +1,188 @@
 ---
-import { getTranslations } from '../../../i18n/ui';
+import { getTranslations } from "../../../i18n/ui";
+import "swiper/css";
 
-const { lang = 'es' } = Astro.props;
+const { lang = "es" } = Astro.props;
 const t = getTranslations(lang);
 const { services } = t;
 ---
 
 <section class="section">
-  <div class="container grid-50-50">
-    
-    <!-- Beneficios -->
-    <div class="benefits-col" data-gsap="fade-up">
-      <h2 class="display col-title mb-8">{services.benefitsTitle}</h2>
-      <div class="benefits-grid">
-        {services.benefitsList.map((benefit) => (
-          <div class="benefit-tag">
-            <span class="text-accent">◆</span>
-            <span class="mono">{benefit}</span>
-          </div>
-        ))}
+  <div class="container section-header" data-gsap="fade-up">
+    <h2 class="display mb-4 text-primary text-3xl">
+      {services.valuePropsTitle}
+    </h2>
+    <p class="mono section-subtitle text-secondary text-base">
+      {services.valuePropsSubtitle}
+    </p>
+  </div>
+
+  <div class="container swiper-wrapper-container" data-gsap="fade-up">
+    <!-- Swiper Container -->
+    <div class="swiper value-props-swiper">
+      <div class="swiper-wrapper">
+        {
+          services.valueProps.map((prop: any, index: number) => (
+            <div class="swiper-slide">
+              <div class="prop-card">
+                <div class="card-glow" />
+
+                <div class="card-number-wrapper">
+                  <span class="display card-number  ">{index + 1}</span>
+                </div>
+                <div class="card-content">
+                  <h3 class="display card-title text-xl text-accent ">
+                    {prop.title}
+                  </h3>
+                  <p class="card-desc text-base text-secondary">{prop.desc}</p>
+                </div>
+              </div>
+            </div>
+          ))
+        }
       </div>
     </div>
-    
-    <!-- Casos de Estudio -->
-    <div class="cases-col" data-gsap="fade-up">
-      <h2 class="display col-title mb-8">{services.casesTitle}</h2>
-      <div class="cases-list">
-        {services.casesList.map((caseItem, index) => (
-          <div class="case-item hover-target">
-            <span class="case-num mono text-muted">0{index + 1}</span>
-            <h3 class="case-name display">{caseItem}</h3>
-            <div class="case-arrow text-accent">↗</div>
-          </div>
-        ))}
-      </div>
-    </div>
-    
   </div>
 </section>
 
 <style>
-  .col-title {
-    font-size: clamp(2rem, 5vw, 3.5rem);
+  .section {
+    background-color: var(--bg-primary);
+    border-bottom: 1px solid var(--line);
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+    overflow: hidden;
   }
-  
-  .mb-8 { margin-bottom: 3rem; }
-  
-  .benefits-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.5rem;
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 4rem;
   }
-  
-  .benefit-tag {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1.5rem;
-    border: 1px solid var(--line);
-    background: var(--bg-secondary);
-    font-size: 0.9rem;
-    transition: border-color 0.3s;
+
+  .section-subtitle {
+    max-width: 800px;
+    margin: 0 auto;
+    margin-top: 1rem;
+    line-height: 1.6;
   }
-  
-  .benefit-tag:hover {
-    border-color: var(--accent);
+
+  .swiper-wrapper-container {
+    padding-bottom: 3rem;
   }
-  
-  .cases-list {
+
+  .value-props-swiper {
+    overflow: visible;
+  }
+
+  /* Asegura que todos los slides tengan la misma altura (la del más grande) */
+  .swiper-slide {
+    height: auto;
+  }
+
+  /* Tarjetas */
+  .prop-card {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    height: 100%;
+    min-height: 380px;
+    background-color: var(--bg-secondary);
+    border-radius: 1.5rem;
+    padding: 2.5rem;
+    border: 1px solid var(--line-light);
+    position: relative;
+    overflow: hidden;
+    transition:
+      transform 0.4s ease,
+      border-color 0.4s ease,
+      box-shadow 0.4s ease;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   }
-  
-  .case-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 2rem 0;
-    border-bottom: 1px solid var(--line);
-    cursor: pointer;
-    transition: padding-left 0.3s, color 0.3s;
+
+  .prop-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--accent);
+    box-shadow: 0 20px 40px -10px rgba(34, 211, 238, 0.15);
   }
-  
-  .case-item:hover {
-    padding-left: 1.5rem;
-    border-bottom-color: var(--text-primary);
-  }
-  
-  .case-num {
-    font-size: 1.2rem;
-    width: 3rem;
-  }
-  
-  .case-name {
-    flex-grow: 1;
-    font-size: clamp(1.2rem, 3vw, 2rem);
-  }
-  
-  .case-arrow {
-    font-size: 1.5rem;
+
+  /* Glow sutil en hover */
+  .card-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-primary);
     opacity: 0;
-    transform: translateX(-10px);
-    transition: opacity 0.3s, transform 0.3s;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
   }
-  
-  .case-item:hover .case-arrow {
+
+  .prop-card:hover .card-glow {
     opacity: 1;
-    transform: translateX(0);
+  }
+
+  /* Contenido interno */
+  .card-number-wrapper {
+    margin-bottom: 1.5rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .card-title {
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+  .card-number {
+    font-size: clamp(4rem, 8vw, 6rem);
+    line-height: 1;
+    background: var(--bg-white);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.3));
+  }
+
+  .card-content {
+    position: relative;
+    z-index: 2;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
   }
 </style>
+
+<script>
+  import Swiper from "swiper";
+  import { Autoplay } from "swiper/modules";
+
+  const initSwiper = () => {
+    const swiperContainer = document.querySelector(".value-props-swiper");
+
+    if (swiperContainer) {
+      new Swiper(".value-props-swiper", {
+        modules: [Autoplay],
+        loop: true,
+        autoplay: {
+          delay: 4000,
+          disableOnInteraction: false,
+        },
+        spaceBetween: 30,
+        slidesPerView: 1.1,
+        centeredSlides: true,
+        breakpoints: {
+          768: {
+            slidesPerView: 2,
+            centeredSlides: false,
+            spaceBetween: 30,
+          },
+          1024: {
+            slidesPerView: 3,
+            centeredSlides: false,
+            spaceBetween: 40,
+          },
+        },
+      });
+    }
+  };
+
+  document.addEventListener("astro:page-load", initSwiper);
+</script>
